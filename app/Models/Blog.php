@@ -19,10 +19,12 @@ class Blog extends Model
         'short_description',
         'content',
         'featured_image',
+        'author',
         'meta_title',
         'meta_description',
         'meta_keywords',
         'status',
+        'is_featured',
         'published_at',
     ];
 
@@ -38,7 +40,16 @@ class Blog extends Model
     {
         return [
             'published_at' => 'datetime',
+            'is_featured' => 'boolean',
         ];
+    }
+
+    /**
+     * Scope for featured blogs.
+     */
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true);
     }
 
     /**

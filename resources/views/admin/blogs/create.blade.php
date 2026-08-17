@@ -134,6 +134,23 @@
                         @enderror
                     </div>
 
+                    <!-- Author Name -->
+                    <div class="mb-3">
+                        <label for="author" class="form-label fw-semibold small text-secondary">Author Name</label>
+                        <input type="text" class="form-control @error('author') is-invalid @enderror" id="author" name="author" value="{{ old('author', 'Admin') }}" placeholder="Admin">
+                        @error('author')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Is Featured Checkbox -->
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }}>
+                        <label class="form-check-label fw-semibold small text-secondary" for="is_featured">
+                            Featured Post (Show in Top Slider)
+                        </label>
+                    </div>
+
                     <!-- Published Date -->
                     <div class="mb-4">
                         <label for="published_at" class="form-label fw-semibold small text-secondary">Publish Date & Time</label>
