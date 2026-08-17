@@ -113,9 +113,35 @@
                             <a href="{{ route('admin.blogs.show', $blog->id) }}" class="btn btn-sm btn-light text-primary me-1" title="View">
                                 <i class="fa-solid fa-eye"></i>
                             </a>
-                            <a href="{{ route('admin.blogs.edit', $blog->id) }}" class="btn btn-sm btn-light text-secondary" title="Edit">
+                            <a href="{{ route('admin.blogs.edit', $blog->id) }}" class="btn btn-sm btn-light text-secondary me-1" title="Edit">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
+                            <button type="button" class="btn btn-sm btn-light text-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModalDashboard{{ $blog->id }}">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                            <!-- Delete Modal -->
+                            <div class="modal fade text-start" id="deleteModalDashboard{{ $blog->id }}" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content rounded-4 border-0 shadow">
+                                        <div class="modal-header border-0 pb-0">
+                                            <h5 class="modal-title text-danger fw-bold"><i class="fa-solid fa-triangle-exclamation me-2"></i> Confirm Delete</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body py-3 text-secondary">
+                                            Are you sure you want to delete blog post <strong>"{{ $blog->title }}"</strong>?
+                                        </div>
+                                        <div class="modal-footer border-0 pt-0">
+                                            <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                                            <form action="{{ route('admin.blogs.destroy', $blog->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger rounded-pill px-4">Delete Post</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 @empty
