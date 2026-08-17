@@ -23,10 +23,22 @@ class Blog extends Model
         'meta_title',
         'meta_description',
         'meta_keywords',
+        'tags',
         'status',
         'is_featured',
         'published_at',
     ];
+
+    /**
+     * Get tags as array.
+     */
+    public function getTagsArrayAttribute(): array
+    {
+        if (empty($this->tags)) {
+            return [];
+        }
+        return array_map('trim', explode(',', $this->tags));
+    }
 
     /**
      * Get the category that owns the blog post.

@@ -97,6 +97,15 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+
+                    <div class="mb-3">
+                        <label for="tags" class="form-label fw-semibold small text-secondary">Tags / Hashtags (Comma Separated)</label>
+                        <input type="text" class="form-control @error('tags') is-invalid @enderror" id="tags" name="tags" value="{{ old('tags', $blog->tags) }}" placeholder="Security, UI/UX Design, Digital, AI, Web Development">
+                        <small class="text-muted">These tags render as clickable hashtags on the website blog detail page.</small>
+                        @error('tags')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
             </div>
         </div>
