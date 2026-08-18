@@ -17,6 +17,9 @@ Route::get('/', function () {
     return redirect()->route('admin.login');
 });
 
+Route::get('/blogs', [PublicBlogController::class, 'index'])->name('frontend.blogs.index');
+Route::get('/blog/{slug}', [PublicBlogController::class, 'show'])->name('frontend.blogs.show');
+
 /*
 |--------------------------------------------------------------------------
 | Admin Panel Routes
