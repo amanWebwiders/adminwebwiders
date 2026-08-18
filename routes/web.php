@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Route;
 | Public Web Routes
 |--------------------------------------------------------------------------
 */
-Route::redirect('/', '/admin/login');
+Route::get('/', function () {
+    return redirect()->route('admin.login');
+});
 
 /*
 |--------------------------------------------------------------------------

@@ -168,7 +168,7 @@
             </form>
 
             <div class="text-center mt-4 pt-3 border-top">
-                <a href="{{ route('frontend.blogs.index') }}" class="text-muted small text-decoration-none fw-semibold">
+                <a href="{{ env('MAIN_SITE_URL', 'http://localhost/webwiders/') }}" class="text-muted small text-decoration-none fw-semibold">
                     <i class="fa-solid fa-arrow-left me-1"></i> Back to Public Website
                 </a>
             </div>
