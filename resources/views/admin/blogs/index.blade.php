@@ -96,6 +96,11 @@
                                     Draft
                                 </span>
                             @endif
+                            @if($blog->is_featured)
+                                <span class="badge bg-warning text-dark border px-2 py-1 rounded-pill ms-1" title="Featured Post">
+                                    <i class="fa-solid fa-star me-1"></i>Featured
+                                </span>
+                            @endif
                         </td>
                         <td class="small text-muted">
                             {{ $blog->published_at ? $blog->published_at->format('Y-m-d H:i') : 'Not Set' }}

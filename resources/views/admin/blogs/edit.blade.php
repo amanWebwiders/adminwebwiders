@@ -97,6 +97,15 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+
+                    <div class="mb-3">
+                        <label for="tags" class="form-label fw-semibold small text-secondary">Tags / Hashtags (Comma Separated)</label>
+                        <input type="text" class="form-control @error('tags') is-invalid @enderror" id="tags" name="tags" value="{{ old('tags', $blog->tags) }}" placeholder="Security, UI/UX Design, Digital, AI, Web Development">
+                        <small class="text-muted">These tags render as clickable hashtags on the website blog detail page.</small>
+                        @error('tags')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
             </div>
         </div>
@@ -135,6 +144,23 @@
                         @error('status')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+                    </div>
+
+                    <!-- Author Name -->
+                    <div class="mb-3">
+                        <label for="author" class="form-label fw-semibold small text-secondary">Author Name</label>
+                        <input type="text" class="form-control @error('author') is-invalid @enderror" id="author" name="author" value="{{ old('author', $blog->author ?? 'Admin') }}" placeholder="Admin">
+                        @error('author')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Is Featured Checkbox -->
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" value="1" {{ old('is_featured', $blog->is_featured) ? 'checked' : '' }}>
+                        <label class="form-check-label fw-semibold small text-secondary" for="is_featured">
+                            Featured Post (Show in Top Slider)
+                        </label>
                     </div>
 
                     <!-- Published Date -->

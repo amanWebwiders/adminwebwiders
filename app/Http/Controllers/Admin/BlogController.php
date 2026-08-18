@@ -64,6 +64,8 @@ class BlogController extends Controller
     public function store(StoreBlogRequest $request): RedirectResponse
     {
         $data = $request->validated();
+        $data['is_featured'] = $request->has('is_featured');
+        $data['author'] = $data['author'] ?? 'Admin';
 
         // Unique slug generation
         $slugSource = !empty($data['slug']) ? $data['slug'] : $data['title'];
@@ -114,6 +116,8 @@ class BlogController extends Controller
     public function update(UpdateBlogRequest $request, Blog $blog): RedirectResponse
     {
         $data = $request->validated();
+        $data['is_featured'] = $request->has('is_featured');
+        $data['author'] = $data['author'] ?? 'Admin';
 
         // Unique slug generation if title or slug changed
         $slugSource = !empty($data['slug']) ? $data['slug'] : $data['title'];

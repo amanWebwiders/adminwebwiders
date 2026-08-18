@@ -19,12 +19,26 @@ class Blog extends Model
         'short_description',
         'content',
         'featured_image',
+        'author',
         'meta_title',
         'meta_description',
         'meta_keywords',
+        'tags',
         'status',
+        'is_featured',
         'published_at',
     ];
+
+    /**
+     * Get tags as array.
+     */
+    public function getTagsArrayAttribute(): array
+    {
+        if (empty($this->tags)) {
+            return [];
+        }
+        return array_map('trim', explode(',', $this->tags));
+    }
 
     /**
      * Get the category that owns the blog post.
@@ -38,7 +52,16 @@ class Blog extends Model
     {
         return [
             'published_at' => 'datetime',
+            'is_featured' => 'boolean',
         ];
+    }
+
+    /**
+     * Scope for featured blogs.
+     */
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true);
     }
 
     /**
