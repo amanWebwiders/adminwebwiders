@@ -72,7 +72,7 @@
                         <td>
                             <div class="fw-bold text-dark mb-1">{{ $blog->title }}</div>
                             <small class="text-muted d-block">
-                                <i class="fa-solid fa-link me-1"></i>/blog/{{ $blog->slug }}
+                                <i class="fa-solid fa-link me-1"></i>/blog-detail/{{ $blog->slug }}
                             </small>
                         </td>
                         <td>
@@ -110,6 +110,11 @@
                         </td>
                         <td class="text-end">
                             <div class="btn-group btn-group-sm" role="group">
+                                @if($blog->status === 'published')
+                                    <a href="{{ $blog->live_url }}" target="_blank" class="btn btn-outline-success" title="View Live on Public Site">
+                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                    </a>
+                                @endif
                                 <a href="{{ route('admin.blogs.show', $blog->id) }}" class="btn btn-outline-info" title="Preview View">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>

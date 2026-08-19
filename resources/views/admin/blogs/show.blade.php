@@ -63,11 +63,11 @@
             <i class="fa-solid fa-arrow-left me-1"></i> Back to Blogs List
         </a>
         <h3 class="fw-bold m-0 text-dark">{{ $blog->title }}</h3>
-        <small class="text-muted"><i class="fa-solid fa-link me-1"></i>/blog/{{ $blog->slug }}</small>
+        <small class="text-muted"><i class="fa-solid fa-link me-1"></i>/blog-detail/{{ $blog->slug }}</small>
     </div>
     <div class="d-flex gap-2">
         @if($blog->status === 'published')
-            <a href="{{ route('frontend.blogs.show', $blog->slug) }}" target="_blank" class="btn btn-success rounded-3">
+            <a href="{{ $blog->live_url }}" target="_blank" class="btn btn-success rounded-3">
                 <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> View Live on Public Site
             </a>
         @endif
