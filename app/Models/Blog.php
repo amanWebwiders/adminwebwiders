@@ -77,6 +77,16 @@ class Blog extends Model
     }
 
     /**
+     * Get live public URL for the blog post on main website.
+     */
+    public function getLiveUrlAttribute(): string
+    {
+        $baseUrl = rtrim(config('app.main_site_url', env('MAIN_SITE_URL', 'http://localhost/webwiders/')), '/');
+        return $baseUrl . '/blog-detail/' . $this->slug;
+    }
+
+
+    /**
      * Scope for published blogs.
      */
     public function scopePublished($query)

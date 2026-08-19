@@ -54,6 +54,9 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'main_site_url' => env('MAIN_SITE_URL', 'http://localhost/webwiders/'),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

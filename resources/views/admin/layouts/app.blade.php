@@ -212,7 +212,7 @@
                     </a>
                 </li>
                 <li class="nav-item mt-3 pt-3 border-top border-secondary border-opacity-25 px-3">
-                    <a class="nav-link text-info" href="{{ route('frontend.blogs.index') }}" target="_blank">
+                    <a class="nav-link text-info" href="{{ config('app.main_site_url', env('MAIN_SITE_URL', 'http://localhost/webwiders/')) }}" target="_blank">
                         <i class="fa-solid fa-globe"></i>
                         <span>View Public Website</span>
                     </a>
