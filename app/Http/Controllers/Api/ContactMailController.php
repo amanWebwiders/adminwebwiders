@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class ContactMailController extends Controller
 {
@@ -27,6 +28,40 @@ class ContactMailController extends Controller
             ], 401);
         }
 
+        // 1.1 Dynamic HMAC Signature & Nonce Replay Verification (if headers provided)
+        $timestamp = $request->header('X-Timestamp');
+        $nonce     = $request->header('X-Nonce');
+        $signature = $request->header('X-Signature');
+        $rawBody   = $request->getContent();
+
+        if ($signature && $timestamp && $nonce) {
+            // Check Timestamp (must be within 120 seconds)
+            if (abs(time() - (int)$timestamp) > 120) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized: Request expired.'
+                ], 401);
+            }
+
+            // Replay Attack Block (Nonce check)
+            if (Cache::has('nonce:' . $nonce)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized: Replay attack detected.'
+                ], 401);
+            }
+            Cache::put('nonce:' . $nonce, true, 180); // 3 minutes cache
+
+            // Dynamic HMAC Verification
+            $expectedSignature = hash_hmac('sha256', $timestamp . '.' . $nonce . '.' . $rawBody, $expectedKey);
+            if (!hash_equals($expectedSignature, (string)$signature)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized: Signature mismatch.'
+                ], 401);
+            }
+        }
+
         // 2. Validate Input Payload
         $validator = Validator::make($request->all(), [
             'name'         => 'required|string|max:150',
@@ -36,6 +71,8 @@ class ContactMailController extends Controller
             'product_name' => 'nullable|string|max:150',
             'message'      => 'required|string|max:6000',
             'attachment'   => 'nullable|array',
+            'user_ip'      => 'nullable|string|max:50',
+            'client_ip'    => 'nullable|string|max:50',
         ]);
 
         if ($validator->fails()) {
@@ -57,7 +94,14 @@ class ContactMailController extends Controller
             $data['name'] = 'Website Visitor';
         }
 
-        $data['ip_address'] = $request->ip();
+        // Capture Real Client IP (Fixes 192.185.129.5 server IP recording)
+        $realClientIp = $request->input('user_ip') 
+            ?? $request->input('client_ip') 
+            ?? $request->header('X-CF-Connecting-IP') 
+            ?? $request->header('X-Real-IP') 
+            ?? $request->ip();
+
+        $data['ip_address']   = $realClientIp;
         $data['submitted_at'] = now()->setTimezone('Asia/Kolkata')->format('Y-m-d h:i:s A');
 
         // 3. Send Email via Laravel Mailer
@@ -65,7 +109,7 @@ class ContactMailController extends Controller
             $recipient = env('MAIL_FROM_ADDRESS', 'info@webwiders.com');
             Mail::to($recipient)->send(new ContactFormMail($data));
 
-            Log::info('Contact form email dispatched successfully to ' . $recipient . ' from ' . $data['email']);
+            Log::info('Contact form email dispatched successfully to ' . $recipient . ' from ' . $data['email'] . ' (IP: ' . $realClientIp . ')');
 
             return response()->json([
                 'success' => true,
